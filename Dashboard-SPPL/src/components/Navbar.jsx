@@ -18,8 +18,8 @@ const Navbar = ({ onOpen }) => {
                 />
 
                 {/* Company Logos */}
-                <Image src="/sppl-logo.png" alt="Company Logo" boxSize="40px" mr="2" />
-                <Image src="/iitd-logo.png" alt="Subcompany Logo" boxSize="35px" />
+                <Image src="/images/sppl-logo.png" alt="Company Logo" boxSize="40px" mr="2" />
+                <Image src="/images/iitd-logo.png" alt="Subcompany Logo" boxSize="35px" />
 
                 <Text fontSize="xl" fontWeight="bold" ml="4">My Website</Text>
                 
