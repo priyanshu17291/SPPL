@@ -1,3 +1,5 @@
+// src/components/LoginCard.jsx
+
 import React, { useState } from "react";
 import {
   Button,
@@ -13,21 +15,44 @@ import {
   FormLabel,
 } from "@chakra-ui/react";
 
-const LoginCard = ({ isOpen, onClose }) => {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
+function LoginCard({ isOpen, onClose, onLoginSuccess }) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const handleLogin = () => {
-    // Implement your login validation logic here.
-    // On successful login:
-    setIsLoggedIn(true);
-    onClose(); // Close the modal after login
+  const handleLogin = async () => {
+    setLoading(true);
+    try {
+      const response = await fetch("/api/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ username, password }),
+      });
+
+      if (response.ok) {
+        // Trigger parent callback to set isLoggedIn = true
+        onLoginSuccess();
+        // Close the modal
+        onClose();
+      } else {
+        console.error("Login failed");
+      }
+    } catch (error) {
+      console.error("Error:", error);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose} isCentered>
-      {/* The ModalOverlay applies a blur to everything behind the modal */}
+    <Modal
+      isOpen={isOpen}
+      onClose={onClose}
+      isCentered
+      closeOnOverlayClick={false} // Prevent closing on outside click
+    >
       <ModalOverlay backdropFilter="blur(10px)" />
       <ModalContent>
         <ModalHeader>Login</ModalHeader>
@@ -52,7 +77,12 @@ const LoginCard = ({ isOpen, onClose }) => {
           </FormControl>
         </ModalBody>
         <ModalFooter>
-          <Button colorScheme="blue" mr={3} onClick={handleLogin}>
+          <Button
+            colorScheme="blue"
+            mr={3}
+            onClick={handleLogin}
+            isLoading={loading}
+          >
             Login
           </Button>
           <Button variant="ghost" onClick={onClose}>
@@ -62,6 +92,6 @@ const LoginCard = ({ isOpen, onClose }) => {
       </ModalContent>
     </Modal>
   );
-};
+}
 
 export default LoginCard;
