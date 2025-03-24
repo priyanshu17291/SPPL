@@ -1,136 +1,239 @@
 import { useState } from "react";
 import { 
-  Box, VStack, Link, Icon, Button, Collapse, Text, Flex, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure, useBreakpointValue 
+  Box, VStack, Button, Collapse, Text, Flex, Drawer, DrawerOverlay, DrawerContent, DrawerCloseButton, useDisclosure, useBreakpointValue, Icon 
 } from "@chakra-ui/react";
-import { FiHome, FiChevronDown, FiChevronUp, FiMenu, FiInfo, FiMail } from "react-icons/fi";
+import { FiChevronDown, FiChevronUp } from "react-icons/fi";
+import { MdMenu } from "react-icons/md";
 import { NavLink } from "react-router-dom";
 
+const pallete = {
+  hover_blue: "blue.500",
+  btn_blue: "blue.600",
+  hover_main_blue: "blue.700",
+  main_blue: "blue.800",
+  white: "white"
+};
+
+const menuItems = [
+  { type: 'link', name: 'General', to: '/general' },
+  { type: 'link', name: 'Admin', to: '/admin' },
+  { type: 'link', name: 'Profile', to: '/profile' },
+  { 
+    type: 'dropdown', 
+    name: 'Project', 
+    children: [
+      { name: 'Project A', to: '/project/project-a' },
+      { name: 'Project B', to: '/project/project-b' }
+    ]
+  },
+  { 
+    type: 'dropdown', 
+    name: 'Design Proof Check', 
+    children: [
+      { name: 'Compliance Report', to: '/project/compliance-report' },
+      { name: 'Analysis Report', to: '/project/project-report' }
+    ]
+  },
+  { 
+    type: 'dropdown', 
+    name: 'Non-Destructive Evaluation',
+    children: [
+      { 
+        type: 'dropdown', 
+        name: 'Done By Other Party', 
+        children: [
+          { name: 'Compliance Report', to: '/project/project-a' }
+        ]
+      },
+      { 
+        type: 'dropdown', 
+        name: 'Done By SPPL India', 
+        children: [
+          { name: 'Test Methodology', to: '/project/project-a' },
+          { name: 'Test Results', to: '/project/project-a' },
+          { name: 'Compliance Report', to: '/project/project-a' }
+        ]
+      },
+    ]
+  },
+  { 
+    type: 'dropdown', 
+    name: 'Load Testing', 
+    children: [
+      { name: 'Project A', to: '/project/project-a' },
+      { name: 'Project B', to: '/project/project-b' }
+    ]
+  },
+  { 
+    type: 'dropdown', 
+    name: 'Structural Health Monitoring (SHM)', 
+    children: [
+      { name: 'Sensor Layout', to: '/SensorLayout' },
+      { name: 'Sensor Based Monitoring', to: '/SensorMonitoring' },
+      { name: 'Frequency Analysis', to: '/FreqencyAnalysis' },
+      { name: 'Deflection Profile', to: '/Deflection Profile'}
+    ]
+  },
+  { 
+    type: 'dropdown', 
+    name: 'Advanced Features', 
+    children: [
+      { name: 'Project A', to: '/project/project-a' },
+      { name: 'Project B', to: '/project/project-b' }
+    ]
+  },
+  { type: 'link', name: 'Threshold Based Alerts', to: '/alerts' },
+  { type: 'link', name: 'Report Generation', to: '/reports' },
+  { type: 'link', name: 'Contact', to: '/contact' },
+  { type: 'link', name: 'Settings', to: '/settings' }
+];
+
+const DirectLink = ({ name, to }) => (
+  <NavLink to={to} style={{ width: "100%" }}>
+    <Flex 
+      align="center" 
+      p="2" 
+      _hover={{ bg: pallete.hover_main_blue, borderRadius: "md" }}
+    >
+      <Text>{name}</Text>
+    </Flex>
+  </NavLink>
+);
+
+// DropdownItem now receives childrenItems and handles toggling its own open state.
+const DropdownItem = ({ name, childrenItems, isCollapsed, openDropdowns, setOpenDropdowns }) => {
+  const isOpen = openDropdowns.includes(name);
+  const toggleDropdown = () => {
+    if (isOpen) {
+      setOpenDropdowns(openDropdowns.filter(n => n !== name));
+    } else {
+      setOpenDropdowns([...openDropdowns, name]);
+    }
+  };
+
+  return (
+    <Box w="100%">
+      <Flex
+        align="center"
+        p="2"
+        cursor="pointer"
+        onClick={toggleDropdown}
+        _hover={{ bg: pallete.hover_main_blue, borderRadius: "md" }}
+      >
+        <Text flex="1">{name}</Text>
+        {!isCollapsed && (
+          <Icon 
+            as={isOpen ? FiChevronUp : FiChevronDown} 
+            boxSize="4" 
+          />
+        )}
+      </Flex>
+      <Collapse in={isOpen} animateOpacity>
+        <VStack align="start" pl="4" spacing="1">
+          {childrenItems.map(child => renderMenuItem(child, isCollapsed, openDropdowns, setOpenDropdowns))}
+        </VStack>
+      </Collapse>
+    </Box>
+  );
+};
+
+// Updated renderMenuItem to treat items without a type as links.
+const renderMenuItem = (item, isCollapsed, openDropdowns, setOpenDropdowns) => {
+  if (item.type === "link" || !item.type) {
+    return <DirectLink key={item.name} name={item.name} to={item.to} />;
+  } else if (item.type === "dropdown") {
+    return (
+      <DropdownItem
+        key={item.name}
+        name={item.name}
+        childrenItems={item.children}
+        isCollapsed={isCollapsed}
+        openDropdowns={openDropdowns}
+        setOpenDropdowns={setOpenDropdowns}
+      />
+    );
+  }
+  return null;
+};
+
+const SidebarContent = ({ isCollapsed, openDropdowns, setOpenDropdowns }) => {
+  // When expanded, width is 14rem; when collapsed, width is 0.
+  const width = isCollapsed ? "0" : "14rem";
+  return (
+    <Box
+      w={width}
+      bg={pallete.main_blue}
+      color={pallete.white}
+      maxH="100vh"
+      overflow="auto"
+      p={isCollapsed ? "0" : "2"}
+      boxShadow="lg"
+      display="flex"
+      flexDirection="column"
+      transition="width 0.3s ease-in-out"
+      css={{ "&::-webkit-scrollbar": { width: "4px" } }}
+      position="relative"
+      left="0"
+      top="0"
+      bottom="0"
+      zIndex="1000"
+      pt="16" // extra padding to avoid overlap with the fixed toggle button
+    >
+      {!isCollapsed && (
+        <VStack align="start" spacing="2" w="100%">
+          {menuItems.map(item =>
+            renderMenuItem(item, isCollapsed, openDropdowns, setOpenDropdowns)
+          )}
+        </VStack>
+      )}
+    </Box>
+  );
+};
+
 const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false);
-  const [isHomeOpen, setIsHomeOpen] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true); // false means expanded
+  const [openDropdowns, setOpenDropdowns] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   return (
     <>
-      {/* Mobile Menu Button */}
-      {isMobile && (
-        <Button 
-          onClick={onOpen} 
-          position="absolute" 
-          top="4" left="4"
-          bg="blue.600"
-          color="white"
-          _hover={{ bg: "blue.500" }}
-          zIndex="1000"
-        >
-          <Icon as={FiMenu} />
-        </Button>
-      )}
+      {/* Fixed Toggle Button */}
+      <Button
+        onClick={() => setIsCollapsed(!isCollapsed)}
+        position="absolute"
+        top="4"
+        left="4"
+        bg={pallete.btn_blue}
+        color={pallete.white}
+        _hover={{ bg: pallete.hover_blue }}
+        zIndex="1100"
+      >
+        <MdMenu size="1.5em" />
+      </Button>
 
-      {/* Sidebar for Desktop */}
       {!isMobile && (
-        <SidebarContent 
-          isCollapsed={isCollapsed} 
-          setIsCollapsed={setIsCollapsed} 
-          isHomeOpen={isHomeOpen} 
-          setIsHomeOpen={setIsHomeOpen} 
+        <SidebarContent
+          isCollapsed={isCollapsed}
+          openDropdowns={openDropdowns}
+          setOpenDropdowns={setOpenDropdowns}
         />
       )}
 
-      {/* Sidebar for Mobile (Drawer) */}
       {isMobile && (
         <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
           <DrawerOverlay />
-          <DrawerContent bg="blue.800" color="white" p="4">
+          <DrawerContent bg={pallete.btn_blue} color={pallete.white} p="4">
             <DrawerCloseButton />
-            <SidebarContent isMobile isHomeOpen={isHomeOpen} setIsHomeOpen={setIsHomeOpen} />
+            <SidebarContent
+              isCollapsed={false}
+              openDropdowns={openDropdowns}
+              setOpenDropdowns={setOpenDropdowns}
+            />
           </DrawerContent>
         </Drawer>
       )}
     </>
-  );
-};
-
-// Sidebar Content (Used in Both Desktop and Mobile)
-const SidebarContent = ({ isCollapsed, setIsCollapsed, isHomeOpen, setIsHomeOpen, isMobile }) => {
-  return (
-    <Box
-      w={isCollapsed ? "80px" : "250px"}
-      bg="blue.800"
-      color="white"
-      minH="100vh"
-      p="4"
-      boxShadow="lg"
-      transition="width 0.3s"
-      display="flex"
-      flexDirection="column"
-    >
-      {/* Toggle Button (Only for Desktop) */}
-      {!isMobile && (
-        <Button
-          onClick={() => setIsCollapsed(!isCollapsed)}
-          bg="blue.600"
-          color="white"
-          _hover={{ bg: "blue.500" }}
-          mb={4}
-        >
-          <Icon as={FiMenu} />
-        </Button>
-      )}
-
-      {/* Navigation Items */}
-      <VStack align="start" spacing={4} w="100%">
-        {/* Home with Dropdown */}
-        <Box w="100%">
-          <Flex
-            align="center"
-            p="3"
-            w="100%"
-            cursor="pointer"
-            _hover={{ bg: "blue.700" }}
-            borderRadius="md"
-            onClick={() => setIsHomeOpen(!isHomeOpen)}
-          >
-            <Icon as={FiHome} mr={isCollapsed ? "0" : "3"} />
-            {!isCollapsed && <Text flex="1">Home</Text>}
-            {!isCollapsed && <Icon as={isHomeOpen ? FiChevronUp : FiChevronDown} />}
-          </Flex>
-
-          {/* Dropdown Sub-Menu */}
-          <Collapse in={isHomeOpen} animateOpacity>
-            <VStack align="start" pl={isCollapsed ? "0" : "8"} spacing={2}>
-              <NavItem to="/home/dashboard" label="Dashboard" isCollapsed={isCollapsed} />
-              <NavItem to="/home/settings" label="Settings" isCollapsed={isCollapsed} />
-            </VStack>
-          </Collapse>
-        </Box>
-
-        {/* Other Links */}
-        <NavItem to="/about" icon={FiInfo} label="About" isCollapsed={isCollapsed} />
-        <NavItem to="/contact" icon={FiMail} label="Contact" isCollapsed={isCollapsed} />
-      </VStack>
-    </Box>
-  );
-};
-
-// Reusable Nav Item Component
-const NavItem = ({ to, icon, label, isCollapsed }) => {
-  return (
-    <Link
-      as={NavLink}
-      to={to}
-      display="flex"
-      alignItems="center"
-      p="3"
-      w="100%"
-      _hover={{ bg: "blue.700" }}
-      _activeLink={{ bg: "blue.600" }}
-      borderRadius="md"
-    >
-      {icon && <Icon as={icon} mr={isCollapsed ? "0" : "3"} />}
-      {!isCollapsed && label}
-    </Link>
   );
 };
 

@@ -13,9 +13,10 @@ const HomePage = () => {
         bgImage="url('https://images.unsplash.com/photo-1600784023365-90c46ef6cba1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80')"
         bgSize="cover"
         bgPosition="center"
+        border={"1px solid green"}
       >
-        <SensorPanel />
-        <StructurePanel />
+        {/* <SensorPanel /> */}
+        {/* <StructurePanel /> */}
       </Flex>
     </Flex>
   );
@@ -35,13 +36,13 @@ const SensorPanel = () => (
   </Box>
 );
 
-const StructurePanel = () => (
-  <Box flex="2" bg="whiteAlpha.900" p={4} borderRadius="md" boxShadow="md">
-    <Heading as="h2" size="md" mb={4}>Skeletal Structure</Heading>
-    <Box w="100%" h="400px" border="1px solid" borderColor="gray.300" borderRadius="md" display="flex" alignItems="center" justifyContent="center">
-      <Text color="gray.500">3D Model Placeholder</Text>
-    </Box>
-  </Box>
-);
+// const StructurePanel = () => (
+//   <Box flex="2" bg="whiteAlpha.900" p={4} borderRadius="md" boxShadow="md">
+//     <Heading as="h2" size="md" mb={4}>Skeletal Structure</Heading>
+//     <Box w="100%" h="400px" border="1px solid" borderColor="gray.300" borderRadius="md" display="flex" alignItems="center" justifyContent="center">
+//       <Text color="gray.500">3D Model Placeholder</Text>
+//     </Box>
+//   </Box>
+// );
 
 export default HomePage;
