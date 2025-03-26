@@ -8,6 +8,7 @@ import LoginCard from "./LoginCard";
 
 const pallete = {
   hover_blue: "blue.500",
+  nav_blue: "#E2DDD5",
   btn_blue: "blue.600",
   hover_main_blue: "blue.700",
   main_blue: "blue.800",
@@ -17,21 +18,21 @@ const pallete = {
 
 const NavbarContent = ({ onOpen, onLoginOpen, isLoggedIn, handleLogout }) => {
   return (
-    <Box bg={pallete.btn_blue} color="white" px="6" py="3" boxShadow="md">
+    <Box color="white" px="6" py="3" boxShadow="md">
       <Flex align="center">
-        {/* Hamburger Icon for Mobile */}
+        {/* Hamburger Icon for Mobile
         <IconButton 
           display={{ base: "flex", md: "none" }} 
           icon={<HamburgerIcon />} 
           onClick={onOpen} 
           aria-label="Open Menu"
           mr="4"
-        />
+        /> */}
         
         {/* Company Logos */}
         <Image src="/images/sppl-logo.png" alt="Company Logo" boxSize="45px" ml="14" />
         <Image src="/images/iitd-logo.png" alt="Subcompany Logo" boxSize="45px" ml="5" />
-        <Text fontSize="xl" fontWeight="bold" ml="4">Sanrachna Prahari</Text>
+        <Text textColor={pallete.hover_main_blue} fontSize="xl" fontWeight="bold" ml="4">Sanrachna Prahari Private Limited</Text>
         <Text fontSize="xxxl" fontWeight="semibold" ml="4" color={pallete.red}>
           ... An IITD Company
         </Text>

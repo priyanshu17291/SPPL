@@ -1,48 +1,101 @@
 import React from 'react';
-import { Box, Flex, Heading, Select, Text, Button, useColorModeValue } from '@chakra-ui/react';
+import { Box, Flex, Heading, Text, Button, useColorModeValue, VStack } from '@chakra-ui/react';
 
 const HomePage = () => {
   const bg = useColorModeValue('gray.50', 'gray.800');
 
   return (
-    <Flex flex="1" direction="column" bg={bg}> {/* Ensure it fills available space */}
+    <Flex flex="1" direction="column" bg={bg}>
+      {/* Hero Section */}
       <Flex
         flex="1"
         direction={{ base: 'column', lg: 'row' }}
-        p={4}
-        bgImage="url('https://images.unsplash.com/photo-1600784023365-90c46ef6cba1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1470&q=80')"
-        bgSize="cover"
+        p={6}
         bgPosition="center"
-        border={"1px solid green"}
+        align="center"
+        justify="center"
+        textAlign="center"
+        color="white"
       >
-        {/* <SensorPanel /> */}
-        {/* <StructurePanel /> */}
+        <Box maxW="90%" height="600px" p={6} bg="rgba(255, 255, 255, 0.6)" borderRadius="md" shadow="md" color="black">
+          <Heading size="xl" mb={4}>Ensuring Structural Integrity, Safety & Longevity</Heading>
+          <Text fontSize="lg">
+            Empowering infrastructure with real-time health monitoring solutions.  
+            Our cutting-edge SHM technology provides actionable insights to prevent structural failures.
+          </Text>
+          {/* <Button mt={4} colorScheme="green" size="lg">
+            Get Started
+          </Button> */}
+        </Box>
       </Flex>
+
+      {/* Section: How It Works */}
+      <Box py={10} textAlign="center">
+        <Heading size="lg" mb={6}>How Structural Health Monitoring Works</Heading>
+        <Flex wrap="wrap" justify="center" maxW="1200px" mx="auto" gap={6}>
+          <Box p={6} borderRadius="md" bg="white" shadow="md" textAlign="center" w="300px">
+            <Heading size="md" mb={2}>📡 Sensors & Data Collection</Heading>
+            <Text>Our high-precision sensors continuously track vibrations, stress, and temperature changes.</Text>
+          </Box>
+          <Box p={6} borderRadius="md" bg="white" shadow="md" textAlign="center" w="300px">
+            <Heading size="md" mb={2}>📊 AI-Powered Insights</Heading>
+            <Text>Advanced machine learning models analyze data in real-time to detect anomalies.</Text>
+          </Box>
+          <Box p={6} borderRadius="md" bg="white" shadow="md" textAlign="center" w="300px">
+            <Heading size="md" mb={2}>🛠 Predictive Maintenance</Heading>
+            <Text>Proactive monitoring helps schedule maintenance before major failures occur.</Text>
+          </Box>
+        </Flex>
+      </Box>
+
+      {/* Section: Why Choose Us */}
+      <Box py={10} bg="gray.100" textAlign="center">
+        <Heading size="lg" mb={6}>Why Choose Our SHM Solutions?</Heading>
+        <Flex wrap="wrap" justify="center" maxW="1200px" mx="auto" gap={6}>
+          <Box p={6} borderRadius="md" bg="white" shadow="md" w="300px">
+            <Heading size="md" mb={2}>🚀 Real-Time Alerts</Heading>
+            <Text>Instant notifications about critical changes in structure integrity.</Text>
+          </Box>
+          <Box p={6} borderRadius="md" bg="white" shadow="md" w="300px">
+            <Heading size="md" mb={2}>📈 Data-Driven Decisions</Heading>
+            <Text>Make informed decisions based on AI-powered reports.</Text>
+          </Box>
+          <Box p={6} borderRadius="md" bg="white" shadow="md" w="300px">
+            <Heading size="md" mb={2}>🔧 Cost-Effective Solutions</Heading>
+            <Text>Reduce repair costs by detecting potential failures early.</Text>
+          </Box>
+        </Flex>
+      </Box>
+
+      {/* Section: Case Studies */}
+      <Box py={10} textAlign="center">
+        <Heading size="lg" mb={6}>Real-World Impact</Heading>
+        <Flex wrap="wrap" justify="center" maxW="1200px" mx="auto" gap={6}>
+          <Box p={6} borderRadius="md" bg="white" shadow="md" w="300px">
+            <Heading size="md" mb={2}>🏗 Bridges</Heading>
+            <Text>Our SHM system detected early corrosion signs, preventing a major collapse.</Text>
+          </Box>
+          <Box p={6} borderRadius="md" bg="white" shadow="md" w="300px">
+            <Heading size="md" mb={2}>🏢 High-Rise Buildings</Heading>
+            <Text>Monitored structural stress during an earthquake, ensuring safety.</Text>
+          </Box>
+          <Box p={6} borderRadius="md" bg="white" shadow="md" w="300px">
+            <Heading size="md" mb={2}>🚄 Railways</Heading>
+            <Text>Detected cracks in railway tracks before they led to accidents.</Text>
+          </Box>
+        </Flex>
+      </Box>
+
+      {/* Section: Call to Action */}
+      <Box py={10} bg="green.300" color="white" textAlign="center" borderRadius="md">
+        <Heading size="lg" mb={4}>Secure Your Infrastructure Today</Heading>
+        <Text fontSize="lg" mb={4}>
+          Get in touch to deploy our advanced SHM technology and protect your assets.
+        </Text>
+        <Button size="lg" colorScheme="whiteAlpha">Contact Us</Button>
+      </Box>
     </Flex>
   );
 };
-
-const SensorPanel = () => (
-  <Box flex="1" mr={{ lg: 4 }} bg="whiteAlpha.900" p={4} borderRadius="md" boxShadow="md">
-    <Heading as="h2" size="md" mb={4}>Choose Sensor</Heading>
-    <Select placeholder="Select Sensor" mb={2} />
-    <Button colorScheme="teal" mb={4}>Show</Button>
-    <Heading as="h3" size="sm" mb={2}>Project</Heading>
-    <Select placeholder="Select Project" mb={2} />
-    <Heading as="h3" size="sm" mb={2}>Project Location</Heading>
-    <Select placeholder="Project Location" mb={4} />
-    <Text fontWeight="semibold">Temperature: <Text as="span">21.05°C</Text></Text>
-    <Text fontWeight="semibold" mb={2}>Humidity: <Text as="span">64%</Text></Text>
-  </Box>
-);
-
-// const StructurePanel = () => (
-//   <Box flex="2" bg="whiteAlpha.900" p={4} borderRadius="md" boxShadow="md">
-//     <Heading as="h2" size="md" mb={4}>Skeletal Structure</Heading>
-//     <Box w="100%" h="400px" border="1px solid" borderColor="gray.300" borderRadius="md" display="flex" alignItems="center" justifyContent="center">
-//       <Text color="gray.500">3D Model Placeholder</Text>
-//     </Box>
-//   </Box>
-// );
 
 export default HomePage;

@@ -158,7 +158,7 @@ const renderMenuItem = (item, isCollapsed, openDropdowns, setOpenDropdowns) => {
 
 const SidebarContent = ({ isCollapsed, openDropdowns, setOpenDropdowns }) => {
   // When expanded, width is 14rem; when collapsed, width is 0.
-  const width = isCollapsed ? "0" : "14rem";
+  const width = isCollapsed ? "0" : "16rem";
   return (
     <Box
       w={width}
@@ -176,7 +176,7 @@ const SidebarContent = ({ isCollapsed, openDropdowns, setOpenDropdowns }) => {
       left="0"
       top="0"
       bottom="0"
-      zIndex="1000"
+      zIndex="1003"
       pt="16" // extra padding to avoid overlap with the fixed toggle button
     >
       {!isCollapsed && (
@@ -191,7 +191,7 @@ const SidebarContent = ({ isCollapsed, openDropdowns, setOpenDropdowns }) => {
 };
 
 const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(true); // false means expanded
+  const [isCollapsed, setIsCollapsed] = useState(false); // false means expanded
   const [openDropdowns, setOpenDropdowns] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useBreakpointValue({ base: true, md: false });
@@ -207,7 +207,7 @@ const Sidebar = () => {
         bg={pallete.btn_blue}
         color={pallete.white}
         _hover={{ bg: pallete.hover_blue }}
-        zIndex="1100"
+        zIndex="1005"
       >
         <MdMenu size="1.5em" />
       </Button>
