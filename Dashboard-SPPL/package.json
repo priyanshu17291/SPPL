@@ -1,5 +1,6 @@
 {
-  "name": "my-vite-app",
+  "homepage": "https://priyanshu17291.github.io/SPPL/",
+  "name": "dashboard-sppl",
   "private": true,
   "version": "0.0.0",
   "type": "module",

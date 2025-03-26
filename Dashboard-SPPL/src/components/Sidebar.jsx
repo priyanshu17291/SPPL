@@ -100,7 +100,6 @@ const DirectLink = ({ name, to }) => (
   </NavLink>
 );
 
-// DropdownItem now receives childrenItems and handles toggling its own open state.
 const DropdownItem = ({ name, childrenItems, isCollapsed, openDropdowns, setOpenDropdowns }) => {
   const isOpen = openDropdowns.includes(name);
   const toggleDropdown = () => {
@@ -137,7 +136,6 @@ const DropdownItem = ({ name, childrenItems, isCollapsed, openDropdowns, setOpen
   );
 };
 
-// Updated renderMenuItem to treat items without a type as links.
 const renderMenuItem = (item, isCollapsed, openDropdowns, setOpenDropdowns) => {
   if (item.type === "link" || !item.type) {
     return <DirectLink key={item.name} name={item.name} to={item.to} />;
@@ -157,7 +155,6 @@ const renderMenuItem = (item, isCollapsed, openDropdowns, setOpenDropdowns) => {
 };
 
 const SidebarContent = ({ isCollapsed, openDropdowns, setOpenDropdowns }) => {
-  // When expanded, width is 14rem; when collapsed, width is 0.
   const width = isCollapsed ? "0" : "16rem";
   return (
     <Box
@@ -177,7 +174,7 @@ const SidebarContent = ({ isCollapsed, openDropdowns, setOpenDropdowns }) => {
       top="0"
       bottom="0"
       zIndex="1003"
-      pt="16" // extra padding to avoid overlap with the fixed toggle button
+      pt="16"
     >
       {!isCollapsed && (
         <VStack align="start" spacing="2" w="100%">
@@ -191,16 +188,25 @@ const SidebarContent = ({ isCollapsed, openDropdowns, setOpenDropdowns }) => {
 };
 
 const Sidebar = () => {
-  const [isCollapsed, setIsCollapsed] = useState(false); // false means expanded
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const [openDropdowns, setOpenDropdowns] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const isMobile = useBreakpointValue({ base: true, md: false });
+
+  // Handle toggle: open a Drawer for mobile, or collapse/expand for desktop.
+  const handleToggle = () => {
+    if (isMobile) {
+      onOpen();
+    } else {
+      setIsCollapsed(!isCollapsed);
+    }
+  };
 
   return (
     <>
       {/* Fixed Toggle Button */}
       <Button
-        onClick={() => setIsCollapsed(!isCollapsed)}
+        onClick={handleToggle}
         position="absolute"
         top="4"
         left="4"
@@ -212,6 +218,7 @@ const Sidebar = () => {
         <MdMenu size="1.5em" />
       </Button>
 
+      {/* Sidebar for non-mobile devices */}
       {!isMobile && (
         <SidebarContent
           isCollapsed={isCollapsed}
@@ -220,6 +227,7 @@ const Sidebar = () => {
         />
       )}
 
+      {/* Sidebar inside a Drawer for mobile devices */}
       {isMobile && (
         <Drawer isOpen={isOpen} placement="left" onClose={onClose}>
           <DrawerOverlay />
